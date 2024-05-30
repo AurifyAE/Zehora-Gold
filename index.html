@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+  <link rel="apple-touch-icon" sizes="76x76" href="./ziya.png">
+  <link rel="icon" type="image/png" href="./ziya.png">
+  <title>
+    Ziya Gold
+  </title>
+  <!-- Link Bootstrap CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!--     Fonts and icons     -->
+  <script src="https://kit.fontawesome.com/0e1fa7c1a3.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+    body {
+      /* transform: scale(0.8); 
+      transform-origin: top left;  */
+      margin: 0;
+      padding: 70px;
+      font-family: "arial", heletica, sans-serif;
+      font-size: 24px;
+      background: white url('./bg1.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      -webkit-animation: 20s linear 0s normal none infinite animate;
+      -moz-animation: 20s linear 0s normal none infinite animate;
+      -ms-animation: 20s linear 0s normal none infinite animate;
+      -o-animation: 20s linear 0s normal none infinite animate;
+      animation: 20s linear 0s normal none infinite animate;
+      color: #21453b;
+      height: 100vh;
+    }
+
+    .row {
+      padding: 25px;
+    }
+
+    .card-logo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #fff;
+      opacity: 90%;
+    }
+
+    .card-logo img {
+      margin-right: 40px;
+    }
+
+    i {
+      font-size: 1.5rem;
+    }
+
+    h4 {
+      color: black;
+      font-weight: bold;
+    }
+
+    .card {
+      border-radius: 20px;
+      margin-left: 10px;
+    }
+
+    .tradingview-widget-container {
+      width: 100%;
+    }
+
+    .rate-card {
+      display: none;
+    }
+
+    .card-table {
+      border-collapse: collapse;
+      border-spacing: 10px;
+      opacity: 0.9;
+    }
+
+    table {
+      display: inline-table;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      margin-left: 0px;
+      font-size: 2.2vw;
+      color: #21453b;
+    }
+
+    .card-table tbody {
+      margin-top: 10px;
+
+    }
+
+    /* .card-table tr {
+      background-color: #f9f9f9;
+    }
+
+    .card-table tbody tr:nth-child(even) {
+      background-color: #e6e6e6;
+    } */
+
+    .card-table thead tr {
+      /* background-color: #C49A6C; */
+      border-bottom: 5px solid #21453b;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.9);
+      color: #21453b;
+    }
+
+    .card-table th,
+    .card-table td {
+      padding: 12px;
+      text-align: center;
+    }
+
+    .card-table td {
+      font-weight: bold;
+    }
+
+    .silver-table td {
+      font-size: 1.8vw;
+    }
+
+    /* Hover effect for better user experience */
+    /* .card-table tbody tr:hover {
+      background-color: #d3d3d3;
+    } */
+
+    .date-time {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      color: #C49A6C;
+      margin-top: 20px;
+      margin-left: 150px;
+    }
+
+    .date-time h3 {
+      font-size: 3vw;
+      font-weight: 600;
+    }
+
+
+    .row2 {
+      display: flex;
+      flex-direction: row;
+      margin-top: 50px;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .fading-label {
+      transition: color 1s ease;
+      /* Adjust the duration and timing function as needed */
+    }
+
+    .gold-silver {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 20px;
+    }
+
+    .gold {
+      background-image: url('');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    .silver {
+      background-image: url('');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    .gold-silver .label {
+      display: flex;
+      align-items: center;
+      font-size: 1.6vw;
+      font-weight: 600;
+    }
+
+    .gold-silver .label h5 {
+      font-size: 30px;
+    }
+
+    .gold-silver .buy,
+    .gold-silver .sell {
+      display: flex;
+      flex-direction: column;
+      font-size: 1.2vw;
+    }
+
+
+    .gold-silver .buy .buy-label,
+    .gold-silver .sell .sell-label {
+      display: flex;
+      font-weight: 600;
+    }
+
+    .gold-silver .buy .buy-label div:first-child,
+    .gold-silver .sell .sell-label div:first-child {
+      margin-top: 0px;
+    }
+
+    .gold-silver .buy .input-box,
+    .gold-silver .sell .input-box {
+      width: max-content;
+      font-size: 2vw;
+      font-weight: 600;
+      text-align: center;
+      color: #fff;
+      border: 3px solid #fff;
+    }
+
+
+    .news-card {
+      display: flex;
+      flex-direction: row;
+      /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.9); */
+      /* opacity: 100%; */
+      height: 70px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.9);
+      width: 100%;
+    }
+
+    .news-card .news-label {
+      display: flex;
+      width: 500px;
+      padding: 5px;
+      flex-direction: column;
+      align-items: center;
+      background-color: transparent;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.9);
+      color: #21453b;
+      /* border-right: 5px solid #C49A6C; */
+    }
+
+    .news-card .news-label h3 {
+      font-size: 1.4vw;
+      font-weight: 600;
+    }
+
+    .news-card .news-label p {
+      margin-top: -15px;
+      font-size: 1.1vw;
+      font-weight: 600;
+    }
+
+    .news-card .news {
+      display: flex;
+      padding: 5px;
+      font-size: 1.8vw;
+      color: #21453b;
+      font-weight: 400;
+    }
+
+    /* #C49A6C */
+  </style>
+</head>
+
+<body>
+  <div class="col-lg-12" style="display: flex; flex-direction: row; justify-content: space-between;">
+    <div class="col-lg-3 div2">
+      <img class="logo" src="./ziya.png" alt="" style="width: 350px; margin-top: -40px; margin-left: 50px;">
+    </div>
+    <div class="col-lg-3 div1">
+      <div id="clock" style="font-size: 3vw; color: #21453b; font-weight: 600;  margin-top: 30px;"></div>
+    </div>
+    <div class="col-lg-2 div3" style="display: flex; flex-direction: column; align-items: flex-end;">
+      <div id="day" style="font-size: 3vw; color: #21453b; font-weight: 600;"></div>
+      <div id="date" style="font-size: 2.2vw; color: #21453b; font-weight: 600;"></div>
+    </div>
+    <div class="col-lg-4 div3"></div>
+  </div>
+
+  <div class="row">
+    <div class=" col-lg-4 gold-silver gold d-block ml-5" style="margin-top:-20px ;">
+      <!-- GOLD -->
+      <div class="label"
+        style="display: flex;justify-content: center;align-items: center;color: #21453b; border-bottom: 7px solid #21453b; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.9);">
+        <p>Gold</p>
+        <h5>oz</h5>
+      </div>
+      <div class="d-flex mt-2" style="justify-content:space-around; ">
+        <div class="buy">
+          <div class="buy-label">
+
+            <p>BID</p>
+            <div
+              style="background-color: #C49A6C;height: 32px;width: 32px;border: none;border-radius: 50%;  display: flex;justify-content: center;align-items: center;">
+              <i class="fa-solid fa-dollar-sign" style="color: white;"></i>
+            </div>
+          </div>
+          <div class="form-control input-box" id="goldInputLow"></div>
+          <label class="badge badge-success label-low mt-1" style="width: 100px; font-size:20px;"
+            id="lowLabelGold">0</label>
+        </div>
+
+        <div class="sell">
+          <div class="sell-label">
+
+            <p>ASK</p>
+            <div
+              style="background-color: #C49A6C;height: 32px;width: 32px; border: none;border-radius: 50%;  display: flex;justify-content: center;align-items: center;">
+              <i class="fa-solid fa-dollar-sign" style="color: white;"></i>
+            </div>
+          </div>
+          <div class="form-control input-box" id="goldInputHigh"></div>
+          <label class="badge badge-success label-low mt-1" style="width: 100px; font-size:20px;"
+            id="highLabelGold">0</label>
+        </div>
+      </div>
+
+      <!-- silver -->
+      <div class=" label mt-4"
+        style="display: flex;justify-content: center;align-items: center; border-bottom: 7px solid #21453b; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.9); color: #21453b;">
+        <p>Silver</p>
+        <h5>oz</h5>
+      </div>
+      <div class="d-flex mt-2" style="justify-content:space-around;">
+        <div class="buy">
+          <div class="buy-label">
+
+            <p>BID</p>
+            <div
+              style="background-color: #C49A6C;height: 32px;width: 32px;  border: none;border-radius: 50%;display: flex;justify-content: center;align-items: center;">
+              <i class="fa-solid fa-dollar-sign" style="color: white;"></i>
+            </div>
+          </div>
+          <div class="form-control input-box" id="silverInputLow"></div>
+          <label class="badge badge-success label-low mt-1" style="width: 100px; font-size:24px;"
+            id="lowLabelSilver">0</label>
+        </div>
+        <div class="sell">
+          <div class="sell-label">
+
+            <p>ASK</p>
+            <div
+              style="background-color: #C49A6C;height: 32px;width: 32px; border: none;border-radius: 50%;display: flex;justify-content: center;align-items: center;">
+              <i class="fa-solid fa-dollar-sign" style="color: white;"></i>
+            </div>
+          </div>
+          <div class="form-control input-box" id="silverInputHigh"></div>
+          <label class="badge badge-success label-low mt-1" style="width: 100px; font-size:20px;"
+            id="highLabelSilver">0</label>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-lg-7">
+      <div class="card-table">
+        <table>
+          <thead style="margin-bottom: 0px;">
+            <tr>
+              <th colspan="2">COMMODITY</th>
+              <th>UNIT</th>
+              <th>BID (<span id="currencySymbol">AED</span>)</th>
+              <th>ASK (<span id="currencySymbol">AED</span>)</th>
+            </tr>
+            <tr style="height: 10px;background-color: transparent;"></tr>
+          </thead>
+
+          <tbody id="tableBodyTV">
+            <!-- Table body content will be dynamically updated here -->
+          </tbody>
+          <!-- <tbody class="silver-table">
+            <tr>
+              <td style="text-align: right;">Silver</td>
+              <td style="text-align: left; font-size:28px;" >999</td>
+              <td>1 KG</td>
+              <td id="silverBidTd"></td>
+              <td id="silverAskTd"></td>
+            </tr>
+          </tbody> -->
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="row " style="margin-top: -50px;">
+    <div class="col-lg-12 news-card" style="margin-left: 64px; max-width: 96%;">
+      <div class="news-label">
+        <h3>ZIYA GOLD</h3>
+        <p>Latest News</p>
+      </div>
+      <div class="news">
+        <!-- Display News Here -->
+        <marquee behavior="scrolling" direction="left" id="displayNews">-</marquee>
+      </div>
+    </div>
+  </div>
+
+  <div class="rate-card">
+    <div class="col-lg-3">
+      <div class="card">
+        <div class="card-body">
+          <div class="gold-card">
+            <img src="./assets/img/gold.png" alt="">
+            <h3>Gold</h3>
+          </div>
+          <p id="goldRate"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3">
+      <div class="card">
+        <div class="card-body">
+          <div class="silver-card">
+            <img src="./assets/img/silver.png" alt="">
+            <h3>Silver</h3>
+          </div>
+          <p id="silverRate"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+  <!-- Link Bootstrap JS and Popper.js -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script>
+    function startTime() {
+      function updateTime() {
+        var today = new Date();
+        var hr = today.getHours();
+        var min = today.getMinutes();
+        // var sec = today.getSeconds();
+        var ap = (hr < 12) ? "<span>AM</span>" : "<span>PM</span>";
+        hr = (hr == 0) ? 12 : hr;
+        hr = (hr > 12) ? hr - 12 : hr;
+        // Add a zero in front of numbers < 10
+        hr = checkTime(hr);
+        min = checkTime(min);
+        // sec = checkTime(sec);
+        // + ":" + sec
+        document.getElementById("clock").innerHTML = hr + ":" + min + " " + ap;
+
+        var months = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
+        var days = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+        var curWeekDay = days[today.getDay()];
+        var curDay = today.getDate();
+        var curMonth = months[today.getMonth()];
+        var curYear = today.getFullYear();
+        var date = curDay + " " + curMonth + " " + curYear;
+        var day = curWeekDay;
+        document.getElementById("date").innerHTML = date;
+        document.getElementById("day").innerHTML = day;
+      }
+
+      // Call updateTime immediately to set the initial values
+      updateTime();
+
+      // Update every second using setInterval
+      var intervalId = setInterval(updateTime, 1000);
+
+      // Optional: If you want to stop the interval after a specific duration (e.g., 30 minutes)
+      // Uncomment the following lines:
+      // setTimeout(function() {
+      //   clearInterval(intervalId);
+      // }, 30 * 60 * 1000);
+    }
+
+    function checkTime(i) {
+      return (i < 10) ? "0" + i : i;
+    }
+
+    startTime();
+
+  </script>
+
+  <script>
+    // Check if the screen width is below a certain threshold (e.g., 1000 pixels)
+    if (window.innerWidth < 1024) {
+      // Redirect users from mobile and tablet devices to a different page or show an error message
+      window.location.href = '../../../pages/error.html'; // Redirect to a mobile error page
+    }
+  </script>
+  <script src="https://unpkg.com/metaapi.cloud-sdk"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database.js"></script>
+  <script type="module" src="./config/db.js"></script>
+  <script type="module" src="./assets/js/core/spotrateDB.js"></script>
+  <script type="module" defer src="./assets/js/core/displayNews.js"></script>
+  <script type="module" defer src="./assets/js/core/aurifyview2.js"></script>
+</body>
+
+</html>
